@@ -1,0 +1,13 @@
+<form method="POST" action="{{ url_for('stock_bp.delete_stock') }}">
+	<div class="p-2">
+		<h3>Delete stock</h3>
+		{{ form.hidden_tag() }}
+		{{ form.id() }}
+		<p>If you delete this ...</p>
+		<p>Are you sure you want to delete this stock?</p>
+		<div class="form-group" align="right">
+			<a href="{{ url_for('stock_bp.update_stock', id=stock.id) }}" class="btn btn-secondary">No Cancel</a>
+			{{ form.submit(class="btn btn-danger") }}
+		</div>
+	</div>
+</form>

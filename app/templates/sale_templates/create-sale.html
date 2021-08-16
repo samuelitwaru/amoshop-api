@@ -1,0 +1,9 @@
+<form method="POST" action="{{ url_for('sale_bp.create_sale') }}">
+	<h3>Create sale</h3>
+	{{ form.hidden_tag() }}
+	<hr>
+	<div class="form-group">
+		{{ form.submit(class="btn btn-success btn-block") }}
+	</div>
+</form>
+

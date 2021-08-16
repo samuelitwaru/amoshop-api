@@ -1,0 +1,10 @@
+<form method="POST" action="{{ url_for('stock_bp.update_stock') }}">
+	<h3>Update stock</h3>
+	{{ form.hidden_tag() }}
+	{{ form.id() }}
+	<hr>
+	<div class="form-group">
+		{{ form.submit(class="btn btn-success btn-block") }}
+	</div>
+</form>
+

@@ -1,0 +1,9 @@
+<form method="POST" action="{{ url_for('product_bp.create_product') }}">
+	<h3>Create product</h3>
+	{{ form.hidden_tag() }}
+	<hr>
+	<div class="form-group">
+		{{ form.submit(class="btn btn-success btn-block") }}
+	</div>
+</form>
+
