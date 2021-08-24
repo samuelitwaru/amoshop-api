@@ -58,6 +58,7 @@ class SaleCheckoutAPI(Resource):
                 quantity = data.get("quantity")
                 sale = Sale(quantity=quantity, buying_price=product.buying_price, selling_price=product.selling_price, product_id=product_id)
                 sale_models.append(sale)
+                product.quantity -= quantity
 
         current_user = User.query.filter_by(token=request.args.get("token")).first()
         sale_group = SaleGroup(amount=amount, paid=paid, user_id=current_user.id)

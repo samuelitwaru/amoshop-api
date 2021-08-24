@@ -20,7 +20,6 @@ class ProductListAPI(Resource):
         products = Product.query.all()
         return products
 
-    # @marshal_with(product_fields)
     def post(self):
         data = request.json
         create_product_form = CreateProductForm(data=data, meta={"csrf":False})
@@ -63,7 +62,6 @@ class ProductAPI(Resource):
         products = Product.query.all()
         return products
 
-    # @marshal_with(product_fields)
     def put(self, id):
         product = Product.query.filter_by(id=id).first()
         data = request.json
@@ -90,6 +88,16 @@ class ProductAPI(Resource):
             db.session.commit()
             db.session.close()
         else:
-            print(update_product_form.errors)
             return output_json({"message":update_product_form.errors}, 406)
+        return ProductListAPI.get(ProductListAPI)
+
+
+class ProductQuantityAPI(Resource):
+
+    def put(self, id):
+        product = Product.query.filter_by(id=id).first()
+        data = request.json
+        quantity = data.get("quantity")
+        product.quantity += quantity
+        db.session.commit()
         return ProductListAPI.get(ProductListAPI)

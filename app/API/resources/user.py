@@ -17,7 +17,6 @@ class UserListAPI(Resource):
         users = User.query.all()
         return users
 
-    # @marshal_with(user_fields)
     def post(self):
         req_data = request.json
         create_user_form = CreateUserForm(data=req_data, meta={"csrf":False})
@@ -62,7 +61,12 @@ class UserAPI(Resource):
 
     @marshal_with(user_fields)
     def put(self, id):
-        return {}
+        data = request.json
+        user = User.query.filter_by(id=id)
+        print(data)
+        user.update(data)
+        db.session.commit()
+        return UserListAPI.get(UserListAPI)
 
 
 class UserAuthAPI(Resource):
@@ -73,10 +77,13 @@ class UserAuthAPI(Resource):
         password = data.get("password")
         user = authenticate_user(username, password)
         if user:
-            token = user.generate_auth_token()
-            user.token = token.decode()
-            db.session.commit()
-            return marshal(user, user_fields)
+            if user.is_active:
+                token = user.generate_auth_token()
+                user.token = token.decode()
+                db.session.commit()
+                return marshal(user, user_fields)
+            else:
+                return output_json({"message":"Access denied! Your account is inactive."}, 406)
         return output_json({"message":"Incorrect username and password combination!"}, 406)
 
 
@@ -98,35 +105,3 @@ class UserUpdateAPI(Resource):
             return marshal(user, user_fields)
         else:
             return output_json({"message": update_user_password_form.errors}, 406)
-
-
-class UserSessionAPI(Resource):
-
-    @marshal_with(session_fields)
-    def get(self, user_id):
-        session = Session.query.filter_by(user_id=user_id, stop_time=None).first()
-        return session
-
-    @marshal_with(session_fields)
-    def delete(self, user_id):
-        session = Session.query.get(user_id=user_id)
-        db.session.delete(session)
-        db.session.commit()
-        sessions = Session.query.filter_by(user_id=user_id)
-        return session
-
-    @marshal_with(session_fields)
-    def put(self, user_id):
-        return {}
-
-    @marshal_with(session_fields)
-    def post(self, user_id):
-        # check if user has pending sessions
-        data = request.json
-        user = User.query.filter_by(id=user_id).first()
-        session = user.get_latest_session()
-        if not session:
-            session = Session(user_id=user_id)
-            db.session.add(session)
-            db.session.commit()
-        return session

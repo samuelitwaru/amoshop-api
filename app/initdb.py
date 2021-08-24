@@ -2,6 +2,7 @@ import os
 from app import db
 from app.models.dummy_data import main
 
+
 def init_admin(first_name, last_name, email, password):
 	user = User(username=email, password=password)
 	profile = Profile(first_name=first_name, last_name=last_name, telephone="256-778959343", user=user, email=email, is_admin=True)
@@ -19,9 +20,9 @@ def delete_and_create_db():
 	db.create_all()
 
         
-def reset():
+def reset(create_users=True):
     delete_and_create_media()
     delete_and_create_db()
     # init_admin("Sam", "It", "samit@gmail.com", "123")
-    main()
+    main(create_users)
 

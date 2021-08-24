@@ -44,6 +44,7 @@ def create_users():
 
 
 
-def main():
+def main(create_users):
 	create_roles()
-	create_users()
+	if create_users:
+		create_users()
