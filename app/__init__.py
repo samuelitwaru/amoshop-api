@@ -24,6 +24,10 @@ from app.models import models
 from app.setup import *
 
 
+# load template filters
+from app import template_filters
+
+
 # load api resources
 from app.API.resources.product import ProductAPI, ProductListAPI, ProductQuantityAPI
 from app.API.resources.sale import SaleAPI, SaleListAPI, SaleCheckoutAPI
@@ -31,22 +35,28 @@ from app.API.resources.stock import StockAPI, StockListAPI
 from app.API.resources.user import UserAPI, UserListAPI, UserAuthAPI, UserUpdateAPI
 from app.API.resources.sale_group import SaleGroupAPI, SaleGroupListAPI
 
+api_url = '/shop/api/v1.0'
 
-api.add_resource(ProductListAPI, '/shop/api/v1.0/products', endpoint="products")
-api.add_resource(ProductAPI, '/shop/api/v1.0/products/<int:id>', endpoint="product")
-api.add_resource(ProductQuantityAPI, '/shop/api/v1.0/products/<int:id>/quantity', endpoint="product_quantity")
+api.add_resource(ProductListAPI, f'{api_url}/products', endpoint="products")
+api.add_resource(ProductAPI, f'{api_url}/products/<int:id>', endpoint="product")
+api.add_resource(ProductQuantityAPI, f'{api_url}/products/<int:id>/quantity', endpoint="product_quantity")
 
-api.add_resource(SaleListAPI, '/shop/api/v1.0/sales', endpoint="sales")
-api.add_resource(SaleAPI, '/shop/api/v1.0/sales/<int:id>', endpoint="sale")
-api.add_resource(SaleCheckoutAPI, '/shop/api/v1.0/sales/checkout', endpoint="sale_checkout")
+api.add_resource(SaleListAPI, f'{api_url}/sales', endpoint="sales")
+api.add_resource(SaleAPI, f'{api_url}/sales/<int:id>', endpoint="sale")
+api.add_resource(SaleCheckoutAPI, f'{api_url}/sales/checkout', endpoint="sale_checkout")
 
-api.add_resource(StockListAPI, '/shop/api/v1.0/stock', endpoint="stock-list")
-api.add_resource(StockAPI, '/shop/api/v1.0/stock/<int:id>', endpoint="stock")
+api.add_resource(StockListAPI, f'{api_url}/stock', endpoint="stock-list")
+api.add_resource(StockAPI, f'{api_url}/stock/<int:id>', endpoint="stock")
 
-api.add_resource(UserListAPI, '/shop/api/v1.0/users', endpoint="users")
-api.add_resource(UserAPI, '/shop/api/v1.0/users/<int:id>', endpoint="user")
-api.add_resource(UserAuthAPI, '/shop/api/v1.0/users/auth', endpoint="user_auth")
-api.add_resource(UserUpdateAPI, '/shop/api/v1.0/users/<int:id>/update', endpoint="user_update")
+api.add_resource(UserListAPI, f'{api_url}/users', endpoint="users")
+api.add_resource(UserAPI, f'{api_url}/users/<int:id>', endpoint="user")
+api.add_resource(UserAuthAPI, f'{api_url}/users/auth', endpoint="user_auth")
+api.add_resource(UserUpdateAPI, f'{api_url}/users/<int:id>/update', endpoint="user_update")
 
-api.add_resource(SaleGroupListAPI, '/shop/api/v1.0/sale-groups', endpoint="sale-groups")
-api.add_resource(SaleGroupAPI, '/shop/api/v1.0/sale-groups/<int:id>', endpoint="sale-group")
+api.add_resource(SaleGroupListAPI, f'{api_url}/sale-groups', endpoint="sale-groups")
+api.add_resource(SaleGroupAPI, f'{api_url}/sale-groups/<int:id>', endpoint="sale-group")
+
+
+from app.routes.index import index_bp
+
+app.register_blueprint(index_bp)

@@ -2,7 +2,7 @@ import json
 from flask import make_response
 from werkzeug.security import check_password_hash
 from itsdangerous import Serializer
-from app.models import User
+from app.models import *
 from app import app, db, api
 
 
@@ -26,3 +26,12 @@ def output_json(data, code, headers=None):
 	resp = make_response(json.dumps(data), code)
 	resp.headers.extend(headers or {})
 	return resp
+
+
+def reset_db():
+	User.query.delete()
+	Profile.query.delete()
+	Sale.query.delete()
+	SaleGroup.query.delete()
+	Stock.query.delete()
+	db.session.commit()
