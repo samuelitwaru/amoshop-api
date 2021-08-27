@@ -1,4 +1,4 @@
-from flask import Blueprint, request, render_template, redirect, url_for, flash
+from flask import Blueprint, request, render_template, redirect, url_for, flash, send_file
 from app.models import db
 from app.forms import ResetDBForm
 from app.utils import authenticate_user, reset_db
@@ -33,4 +33,6 @@ def reset():
 
 @index_bp.route("/download")
 def download():
-	return render_template('index/index.html')
+	return send_file(f"media/amoshop-linux.zip",
+                     attachment_filename="amoshop-linux.zip", as_attachment=True,
+                     cache_timeout=0)

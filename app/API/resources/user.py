@@ -89,7 +89,6 @@ class UserAuthAPI(Resource):
 
 class UserUpdateAPI(Resource):
 
-    # @marshal_with(user_fields)
     def put(self, id):
         data = request.json
         user = User.query.get(id)
