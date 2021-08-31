@@ -31,8 +31,15 @@ def reset():
 	return redirect(url_for('index.index'))
 
 
-@index_bp.route("/download")
-def download():
-	return send_file(f"media/amoshop-linux.zip",
-                     attachment_filename="amoshop-linux.zip", as_attachment=True,
+@index_bp.route("/download/linux-64")
+def download_lin_64():
+	return send_file(f"media/amoshop-lin64.zip",
+                     attachment_filename="amoshop-lin64.zip", as_attachment=True,
+                     cache_timeout=0)
+
+
+@index_bp.route("/download/win-64")
+def download_win_64():
+	return send_file(f"media/amoshop-win64.exe",
+                     attachment_filename="amoshop-win64.exe", as_attachment=True,
                      cache_timeout=0)

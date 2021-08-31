@@ -7,28 +7,33 @@
 		<thead>
 			<tr>
 				<th>OS</th>
+				<th>Type</th>
 				<th>Download</th>
 			</tr>
 		</thead>
 		<tbody>
 			<tr>
 				<td data-label="Name">Windows-32</td>
-				<td data-label="Job"><a class="ui button">Download</a></td>
+				<td data-label="Name">...</td>
+				<td data-label="Job">...</td>
 			</tr>
 
 			<tr>
 				<td data-label="Name">Windows-64</td>
-				<td data-label="Job"><a class="ui button">Download</a></td>
+				<td data-label="Name">Installer</td>
+				<td data-label="Job"><a class="ui button" href="{{url_for('index.download_win_64')}}">Download</a> (25MB)</td>
 			</tr>
 
 			<tr>
 				<td data-label="Name">Linux-32</td>
-				<td data-label="Job"><a class="ui button">Download</a></td>
+				<td data-label="Name">...</td>
+				<td data-label="Job">...</td>
 			</tr>
 
 			<tr>
 				<td data-label="Name">Linux-64</td>
-				<td data-label="Job"><a class="ui button" href="{{url_for('index.download')}}">Download</a></td>
+				<td data-label="Name">Zip</td>
+				<td data-label="Job"><a class="ui button" href="{{url_for('index.download_lin_64')}}">Download</a> (70MB)</td>
 			</tr>
 	  </tbody>
 	</table>
