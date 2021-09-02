@@ -30,7 +30,7 @@ class Product(db.Model, TimestampedModel):
     selling_price = db.Column(db.Integer, nullable=False)
     stock = db.relationship("Stock", backref="product")
     sales = db.relationship("Sale", backref="product")
-    categories = db.relationship('Category', secondary=product_categories, lazy='subquery', backref=db.backref('users', lazy=True))
+    categories = db.relationship('Category', cascade="all,delete", secondary=product_categories, lazy='subquery', backref=db.backref('products', lazy=True))
 
 	
 class Category(db.Model, TimestampedModel):

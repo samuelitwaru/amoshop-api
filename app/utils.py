@@ -4,6 +4,7 @@ from werkzeug.security import check_password_hash
 from itsdangerous import Serializer
 from app.models import *
 from app import app, db, api
+from app.models.dummy_data import create_roles
 
 
 def authenticate_user(username, password):
@@ -29,11 +30,26 @@ def output_json(data, code, headers=None):
 
 
 def reset_db():
+	for user in User.query.all():
+		user.roles = []
+	for role in User.query.all():
+		role.users = []
+
 	User.query.delete()
+	Role.query.delete()
 	Profile.query.delete()
+	
 	Sale.query.delete()
 	SaleGroup.query.delete()
 	Stock.query.delete()
+	
+	for product in Product.query.all():
+		product.categories = []
+	for category in Category.query.all():
+		category.products = []
 	Product.query.delete()
 	Category.query.delete()
+	create_roles()
+
+
 	db.session.commit()
