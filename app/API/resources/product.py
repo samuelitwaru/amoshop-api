@@ -1,11 +1,13 @@
 from flask import request
 from flask_restful import Resource, marshal_with
 from ..fields import Fields
-from app.models.models import Product, db
+from app.models.models import Product, Category, db
 from app.forms import CreateProductForm, UpdateProductForm
 from app.utils import output_json
 
+
 product_fields = Fields().product_fields()
+
 
 class ProductListAPI(Resource):
 
@@ -21,8 +23,8 @@ class ProductListAPI(Resource):
         return products
 
     def post(self):
-        data = request.json
-        create_product_form = CreateProductForm(data=data, meta={"csrf":False})
+        req_data = request.json
+        create_product_form = CreateProductForm(data=req_data, meta={"csrf":False})
         if create_product_form.validate_on_submit():
             data = create_product_form.data
             name = data.get("name")
@@ -38,6 +40,10 @@ class ProductListAPI(Resource):
                 barcode=barcode, buying_price=buying_price, 
                 selling_price=selling_price, units=units
                 )
+
+            category_ids = req_data.get("categories")
+            categories = Category.query.filter(Category.id.in_(category_ids)).all()
+            product.categories = categories
 
             db.session.add(product)
             db.session.commit()
@@ -64,9 +70,9 @@ class ProductAPI(Resource):
 
     def put(self, id):
         product = Product.query.filter_by(id=id).first()
-        data = request.json
-        data["id"] = id
-        update_product_form = UpdateProductForm(data=data, meta={"csrf":False})
+        req_data = request.json
+        req_data["id"] = id
+        update_product_form = UpdateProductForm(data=req_data, meta={"csrf":False})
         if update_product_form.validate_on_submit():
             data = update_product_form.data
             name = data.get("name")
@@ -84,6 +90,10 @@ class ProductAPI(Resource):
             product.buying_price = buying_price
             product.selling_price = selling_price
             product.units = units
+
+            category_ids = req_data.get("categories")
+            categories = Category.query.filter(Category.id.in_(category_ids)).all()
+            product.categories = categories
 
             db.session.commit()
             db.session.close()

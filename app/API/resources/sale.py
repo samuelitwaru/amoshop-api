@@ -3,6 +3,7 @@ from flask_restful import Resource, marshal_with
 from ..fields import Fields
 from app.models.models import Sale, Product, SaleGroup, User, db
 from app.forms import CreateSaleForm
+from .sale_group import SaleGroupListAPI
 
 sale_fields = Fields().sale_fields()
 
@@ -40,7 +41,7 @@ class SaleAPI(Resource):
 
 class SaleCheckoutAPI(Resource):
 
-    @marshal_with(sale_fields)
+    # @marshal_with(sale_fields)
     def post(self):
         data = request.json
         amount = data.get("amount")
@@ -70,4 +71,4 @@ class SaleCheckoutAPI(Resource):
         db.session.commit()
         db.session.close()
 
-        return SaleListAPI.get(SaleListAPI)
+        return SaleGroupListAPI.get(SaleGroupListAPI)

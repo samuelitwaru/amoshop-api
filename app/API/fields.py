@@ -24,6 +24,7 @@ class Fields:
 			"selling_price": fields.Integer,
 			"stock": fields.Nested(self.stock_fields_min()),
 			"sales": fields.Nested(self.sale_fields_min()),
+			"categories": fields.Nested(self.category_fields_min())
 		}
 
 	def product_fields_min(self):
@@ -39,7 +40,17 @@ class Fields:
 			"selling_price": fields.Integer,
 		}
 
+	def category_fields(self):
+		return { 
+			"id": fields.Integer,
+			"name": fields.String,
+		}
 
+	def category_fields_min(self):
+		return { 
+			"id": fields.Integer,
+			"name": fields.String,
+		}
 
 	def stock_fields(self):
 		return { 

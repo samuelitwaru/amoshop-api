@@ -32,6 +32,7 @@ from app import template_filters
 from app.API.resources.product import ProductAPI, ProductListAPI, ProductQuantityAPI
 from app.API.resources.sale import SaleAPI, SaleListAPI, SaleCheckoutAPI
 from app.API.resources.stock import StockAPI, StockListAPI
+from app.API.resources.category import CategoryAPI, CategoryListAPI
 from app.API.resources.user import UserAPI, UserListAPI, UserAuthAPI, UserUpdateAPI
 from app.API.resources.sale_group import SaleGroupAPI, SaleGroupListAPI
 
@@ -47,6 +48,9 @@ api.add_resource(SaleCheckoutAPI, f'{api_url}/sales/checkout', endpoint="sale_ch
 
 api.add_resource(StockListAPI, f'{api_url}/stock', endpoint="stock-list")
 api.add_resource(StockAPI, f'{api_url}/stock/<int:id>', endpoint="stock")
+
+api.add_resource(CategoryListAPI, f'{api_url}/categories', endpoint="category-list")
+api.add_resource(CategoryAPI, f'{api_url}/categories/<int:id>', endpoint="category")
 
 api.add_resource(UserListAPI, f'{api_url}/users', endpoint="users")
 api.add_resource(UserAPI, f'{api_url}/users/<int:id>', endpoint="user")

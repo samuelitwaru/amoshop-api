@@ -1,4 +1,5 @@
 from flask import request
+from sqlalchemy import desc
 from flask_restful import Resource, marshal_with
 from ..fields import Fields
 from app.models.models import SaleGroup, db
@@ -9,8 +10,12 @@ class SaleGroupListAPI(Resource):
 
     @marshal_with(sale_group_fields)
     def get(self):
-        sale_groups = SaleGroup.query.all()
-        return sale_groups
+        user_id = request.args.get("user")
+        query = SaleGroup.query
+        if user_id:
+            query = query.filter_by(user_id=user_id)
+        query = query.order_by(desc(SaleGroup.created_at))
+        return query.all()
 
     @marshal_with(sale_group_fields)
     def post(self):

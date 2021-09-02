@@ -13,7 +13,6 @@ def index():
 	return render_template('index/index.html', reset_db_form=reset_db_form)
 
 
-
 @index_bp.route("/reset", methods=["POST"])
 def reset():
 	reset_db_form = ResetDBForm()

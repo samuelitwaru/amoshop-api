@@ -12,6 +12,12 @@ class TimestampedModel(Model):
     updated_at = Column(DateTime)
 
 
+product_categories = db.Table('product_categories',
+    db.Column('product_id', db.Integer, db.ForeignKey('product.id'), primary_key=True),
+    db.Column('category_id', db.Integer, db.ForeignKey('category.id'), primary_key=True)
+)
+
+
 class Product(db.Model, TimestampedModel):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String, nullable=False)
@@ -24,7 +30,13 @@ class Product(db.Model, TimestampedModel):
     selling_price = db.Column(db.Integer, nullable=False)
     stock = db.relationship("Stock", backref="product")
     sales = db.relationship("Sale", backref="product")
+    categories = db.relationship('Category', secondary=product_categories, lazy='subquery', backref=db.backref('users', lazy=True))
+
 	
+class Category(db.Model, TimestampedModel):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String, nullable=False, unique=True)
+
 
 class Stock(db.Model, TimestampedModel):
     id = db.Column(db.Integer, primary_key=True)
@@ -39,7 +51,6 @@ class Sale(db.Model, TimestampedModel):
     buying_price = db.Column(db.Integer, nullable=False)
     selling_price = db.Column(db.Integer, nullable=False)
     sale_group_id = db.Column(db.Integer, db.ForeignKey("sale_group.id"))
-    # session_id = db.Column(db.Integer, db.ForeignKey("session.id"), nullable=False)
 
 
 class SaleGroup(db.Model, TimestampedModel):
@@ -48,14 +59,6 @@ class SaleGroup(db.Model, TimestampedModel):
     paid = db.Column(db.Integer, nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey("user.id"))
     sales = db.relationship("Sale", backref="sale")
-
-
-# class Session(db.Model, TimestampedModel):
-#     id = db.Column(db.Integer, primary_key=True)
-#     start_time = db.Column(db.DateTime, nullable=False, default=datetime.now)
-#     stop_time = db.Column(db.DateTime)
-#     user_id = db.Column(db.Integer, db.ForeignKey("user.id"))
-#     sales = db.relationship("Sale", backref="session")
 
 
 user_roles = db.Table('user_roles',
@@ -73,7 +76,6 @@ class User(db.Model, UserMixin):
     token = db.Column(db.String)
     profile = db.relationship('Profile', backref='user', uselist=False, foreign_keys="[Profile.user_id]", cascade="all,delete")
     roles = db.relationship('Role', secondary=user_roles, lazy='subquery', backref=db.backref('users', lazy=True))
-    # sessions = db.relationship("Session", backref="user", lazy='dynamic')
     sale_groups = db.relationship("SaleGroup", backref="user", lazy='dynamic')
 
     def __init__(self, *args, **kwargs):
@@ -116,9 +118,6 @@ class User(db.Model, UserMixin):
             if role:
                 self.roles.append(role)
         db.session.commit()
-
-    # def get_latest_session(self):
-    #     return self.sessions.filter_by(stop_time=None).first()
 
 
 class Role(db.Model):

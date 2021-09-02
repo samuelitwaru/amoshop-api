@@ -34,4 +34,6 @@ def reset_db():
 	Sale.query.delete()
 	SaleGroup.query.delete()
 	Stock.query.delete()
+	Product.query.delete()
+	Category.query.delete()
 	db.session.commit()
